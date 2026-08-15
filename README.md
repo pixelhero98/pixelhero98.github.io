@@ -1,6 +1,6 @@
 # Zinuo (Henry) You — Research Portfolio
 
-Static research portfolio for [zinuoyou.com](https://zinuoyou.com), built with Astro, strict TypeScript, MDX content collections, and lightweight CSS.
+Static research portfolio for [pixelhero98.github.io](https://pixelhero98.github.io), built with Astro, strict TypeScript, MDX content collections, and lightweight CSS. It is prepared for the planned `zinuoyou.com` custom domain.
 
 ## Local development
 
