@@ -1,0 +1,36 @@
+---
+title: Latent Laplace Diffusion
+tagline: Parallel generative forecasting over irregular timestamps using stable latent trajectories.
+status: accepted
+dates: 2023 – Present
+themes: [Diffusion, Irregular time series, Continuous time]
+role: First author and lead implementation author
+collaborators: [Jin Zheng, John Cartlidge]
+problem: Regridding can distort irregular observations, while stepwise continuous-time forecasting accumulates error and latency across the prediction horizon.
+approach: Generate a compact latent trajectory in parallel at requested timestamps, using stable complex-conjugate modes and gap-aware context.
+evidence:
+  - Accepted as an ICML 2026 Spotlight paper.
+  - Evaluated across seven public datasets spanning forecasting, interpolation, missingness, and distribution shift.
+  - Public code includes tests, dataset presets, checkpoint evaluation, baseline adapters, and pretrained-artifact links.
+visual: laplace
+featuredOrder: 3
+links:
+  - label: Paper
+    url: https://arxiv.org/abs/2605.19805
+  - label: Code
+    url: https://github.com/pixelhero98/LLapDiffusion
+---
+
+## Irregular time is signal, not noise
+
+Many forecasting pipelines force observations onto a regular grid before modelling. That simplifies tensor shapes but can erase information carried by the gaps themselves. LLapDiff conditions on observed values, timestamps, masks, and intervals without requiring a uniform observation cadence.
+
+## One latent trajectory, many query times
+
+The model generates a compact latent trajectory and evaluates it directly at target timestamps. Stable complex-conjugate poles parameterize the latent modes, while interval-aware history encoding connects irregular observations to the latent state.
+
+This horizon-wide construction avoids forecasting one physical-time step at a time. The same query mechanism also supports target-horizon completion and historical imputation.
+
+## Research artifact
+
+The public repository packages the method as a tested Python project with dataset presets, evaluation commands, plotting tools, baseline adapters, and links to checkpoints and raw datasets. Limitations are stated directly, including the reduced advantage on regular sampling and opportunities for richer nonlinear latent dynamics.

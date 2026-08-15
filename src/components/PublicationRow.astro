@@ -1,0 +1,36 @@
+---
+import type { CollectionEntry } from 'astro:content';
+interface Props { publication: CollectionEntry<'publications'>; }
+const { publication } = Astro.props;
+const authors = publication.data.authors;
+---
+
+<article class="publication-row">
+	<div class="year">{publication.data.year}</div>
+	<div>
+		<div class="venue">{publication.data.highlight ?? publication.data.venue} · {publication.data.status}</div>
+		<h3>{publication.data.title}</h3>
+		<p class="authors">
+			{authors.map((author, index) => (
+				<><span class:list={{ me: author === 'Zinuo You' }}>{author}</span>{index < authors.length - 1 ? ', ' : ''}</>
+			))}
+		</p>
+		<p class="summary">{publication.data.summary}</p>
+		{publication.data.links.length > 0 && (
+			<div class="pub-links">{publication.data.links.map((link) => <a href={link.url}>{link.label} <span aria-hidden="true">↗</span></a>)}</div>
+		)}
+	</div>
+</article>
+
+<style>
+	.publication-row { display: grid; grid-template-columns: 90px 1fr; gap: 28px; padding: 34px 0; border-top: 1px solid var(--line); }
+	.year { color: var(--teal); font-family: var(--serif); font-size: 1.35rem; }
+	.venue { margin-bottom: 9px; color: var(--ink-soft); font-size: .66rem; font-weight: 750; letter-spacing: .11em; text-transform: uppercase; }
+	h3 { max-width: 900px; margin-bottom: 9px; font-size: clamp(1.2rem, 2.5vw, 1.8rem); line-height: 1.18; }
+	.authors { margin-bottom: 7px; color: var(--ink-soft); font-family: var(--serif); }
+	.me { color: var(--ink); font-weight: 600; text-decoration: underline; text-decoration-color: var(--teal); text-decoration-thickness: 2px; text-underline-offset: 3px; }
+	.summary { max-width: 760px; margin-bottom: 12px; color: var(--ink-soft); font-size: .9rem; }
+	.pub-links { display: flex; flex-wrap: wrap; gap: 16px; }
+	.pub-links a { color: var(--navy); font-size: .72rem; font-weight: 700; text-decoration: none; }
+	@media (max-width: 620px) { .publication-row { grid-template-columns: 1fr; gap: 4px; } }
+</style>

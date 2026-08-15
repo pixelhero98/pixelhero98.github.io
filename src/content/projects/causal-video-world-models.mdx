@@ -1,0 +1,35 @@
+---
+title: Causal Video & Interactive World Models
+tagline: Diagnosing and reducing the representation drift that compounds across long autoregressive rollouts.
+status: ongoing
+dates: Mar 2026 – Present
+themes: [Video generation, World models, Long-horizon consistency]
+role: Research lead for modelling, evaluation, and post-training
+collaborators: [UKRI project partners]
+problem: Short video clips can look convincing while repeated causal rollout quietly accumulates errors in motion, identity, control, and internal state.
+approach: Evaluate the system as a trajectory rather than a set of clips, then connect visible failure to drift in latent, hidden-state, and key-value histories.
+evidence:
+  - Multi-chunk evaluations cover prompt and motion difficulty, action reversals, and repeated or unseen controls.
+  - Probing compares online histories with refreshed and recomputed alternatives to isolate where errors accumulate.
+  - Public-safe quantitative results and clips will be added only after project clearance.
+visual: video
+featuredOrder: 1
+disclosure: Ongoing UKRI-funded research. This page intentionally omits sensitive implementation detail and uncleared quantitative results.
+links: []
+---
+
+## Why long horizons change the problem
+
+A model can generate a strong short clip and still fail as a world model. Once outputs become the context for the next generation step, small representation errors feed back into the system. The research question is therefore not only whether a frame looks plausible, but whether the model preserves motion, state, identity, and action semantics through an extended causal rollout.
+
+## A trajectory-level evaluation
+
+The project evaluates progressive rollout lengths and separates prompt difficulty, motion difficulty, action reversals, and repeated versus unseen controls. It combines visible consistency and action-adherence metrics with probes of VAE latents, transformer hidden states, and key-value histories.
+
+The central diagnostic compares the model’s online history with refreshed or recomputed histories. This makes it possible to distinguish errors already present in the visible latent trajectory from errors amplified inside the causal model’s memory.
+
+## From diagnosis to intervention
+
+Post-training experiments target partition consistency across rollout boundaries while protecting short-horizon quality. The aim is not a cosmetic temporal filter: it is a model that remains controllable when generation becomes interaction.
+
+> Media note: the approved video clips, prompts, and captions have not yet been supplied. The live site uses a systems illustration rather than invented research output and is ready to accept optimized WebM/MP4 assets when cleared.

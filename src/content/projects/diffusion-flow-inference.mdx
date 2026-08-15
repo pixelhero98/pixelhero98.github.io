@@ -1,0 +1,21 @@
+---
+title: Diffusion-to-Flow Schedule Transfer
+tagline: A source-first toolkit for transferring and evaluating fixed diffusion schedules in normalized flow time.
+status: open-source
+dates: 2023 – Present
+themes: [Schedule transfer, Flow matching, Evaluation]
+role: Lead researcher and implementation author
+collaborators: [Jin Zheng, John Cartlidge]
+problem: A diffusion schedule cannot be assumed to preserve its behavior when copied directly into a flow-matching time coordinate.
+approach: Interpret schedules as temporal reparameterizations, map them into normalized flow time, and evaluate them under controlled solver and NFE settings.
+evidence:
+  - Public code includes AYS, GITS, OTS, uniform, late-power, and FlowTS-derived schedules.
+  - The package separates data preparation, frozen backbones, schedule construction, evaluation, and diagnostic figures.
+visual: clock
+disclosure: The associated manuscript is under review; the reviewing venue is intentionally not named.
+links:
+  - label: Code
+    url: https://github.com/pixelhero98/Diffusion-Flow-Inference
+---
+
+The project asks what survives when a schedule designed for diffusion is moved into flow time. It provides explicit coordinate mappings, fixed-solver comparisons, and diagnostic tooling so that schedule effects are not conflated with model retraining or solver changes.

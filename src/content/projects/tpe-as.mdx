@@ -1,0 +1,20 @@
+---
+title: TPE-AS
+tagline: Adaptive Bayesian optimization for expensive, noisy portfolio-model tuning.
+status: published
+dates: 2024 – 2025
+themes: [Bayesian optimization, Portfolio models, Black-box search]
+role: Lead researcher and implementation author
+collaborators: [John Cartlidge, Kevin Elliott, Meng Ge, David Gold]
+problem: Private portfolio models expose mixed, expensive, noisy objectives with limited evaluation budgets and no gradient access.
+approach: Add a budget-dependent mean-variance objective and clipped importance correction to good/bad Parzen-density search.
+evidence:
+  - Published at ICAAI 2025.
+  - Public repository reproduces the optimizer mechanics with transparent synthetic experiments rather than private financial results.
+visual: market
+links:
+  - label: Code
+    url: https://github.com/pixelhero98/TPE-AS
+---
+
+TPE-AS was designed around a controlled evaluator that isolates private models, data, and backtesting infrastructure. The public artifact focuses on reusable optimizer mechanics and synthetic black-box benchmarks.

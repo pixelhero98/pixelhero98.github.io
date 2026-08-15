@@ -1,0 +1,21 @@
+---
+interface Props { eyebrow: string; title: string; description?: string; actionHref?: string; actionLabel?: string; }
+const { eyebrow, title, description, actionHref, actionLabel } = Astro.props;
+---
+
+<div class="section-head">
+	<div>
+		<p class="eyebrow">{eyebrow}</p>
+		<h2>{title}</h2>
+		{description && <p class="lede">{description}</p>}
+	</div>
+	{actionHref && actionLabel && <a class="section-link" href={actionHref}>{actionLabel} <span aria-hidden="true">↗</span></a>}
+</div>
+
+<style>
+	.section-head { display: flex; justify-content: space-between; gap: 32px; align-items: end; margin-bottom: 42px; }
+	.section-head h2 { max-width: 820px; margin-bottom: 18px; }
+	.section-head .lede { margin-bottom: 0; }
+	.section-link { flex: none; margin-bottom: 12px; color: var(--navy); font-size: 0.78rem; font-weight: 700; text-decoration: none; }
+	@media (max-width: 700px) { .section-head { display: block; } .section-link { display: inline-block; margin-top: 18px; } }
+</style>

@@ -1,0 +1,22 @@
+---
+title: C3E — GNN Capacity Estimation
+tagline: Estimating hidden width and propagation depth from a channel-capacity view of graph representation learning.
+status: published
+dates: 2023 – 2025
+themes: [Graph neural networks, Architecture search, Information theory]
+role: First author and lead implementation author
+collaborators: [Jin Zheng, John Cartlidge]
+problem: GNN width and depth are often chosen heuristically even though both control information compression and over-squashing.
+approach: Model spectral GNN propagation as a communication channel and estimate capacity-constrained architecture settings through nonlinear optimization.
+evidence:
+  - Published at AAAI 2026.
+  - Evaluated on nine public graph-learning datasets.
+visual: graph
+links:
+  - label: Paper
+    url: https://arxiv.org/abs/2511.06443
+  - label: Code
+    url: https://github.com/pixelhero98/C3E
+---
+
+C3E connects graph structure, propagation, hidden dimension, and depth through an information-capacity formulation. The result is an auditable architecture-selection mechanism rather than a broad brute-force search.
