@@ -1,0 +1,23 @@
+---
+title: "Finite-Time Corrective Transport for Unified Optimization and Distillation"
+shortTitle: "Corrective Transport"
+summary: "Optimize a finite-step generative process through a corrective field over a frozen base transport."
+group: "featured"
+order: 1
+status: "Working paper"
+dates: "2025–present"
+role: "Research and implementation"
+visual: "transport"
+demo: "transport"
+---
+
+## The question
+Reward optimization and few-step distillation often optimize different objects. This work asks whether both can be formulated around the finite-step operator actually used at inference.
+
+## The idea
+A corrective transport field acts alongside a frozen base generator. The solver rule stays fixed, while the correction is conditioned on the evaluation budget. Terminal improvement provides a signal for pathwise optimization, and a conditional distribution-matching objective connects the result to target data.
+
+The research covers conditional generation and restoration. It combines reinforcement learning, distillation, and finite-step optimization.
+
+## Reading the demonstration
+The experiment below isolates one idea: changing a vector field changes a finite-step transport. It uses an explicitly specified two-dimensional correction, not a trained network. It does not reproduce the paper's optimization procedure or report research performance.

@@ -1,57 +1,11 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { siteConfig } from '../config';
+import Experience from '../components/Experience.astro';
+import {siteConfig as site} from '../config';
 ---
-
-<BaseLayout title="About" description="About Zinuo (Henry) You, a University of Bristol PhD candidate researching generative systems, efficient inference, and continuous-time learning.">
-	<header class="section about-hero">
-		<div class="shell about-grid">
-			<div class="portrait-placeholder" aria-label="Portrait placeholder awaiting an approved professional headshot"><span>ZY</span><small>Professional headshot pending</small></div>
-			<div>
-				<p class="eyebrow">About</p>
-				<h1>Researcher in formulation.<br /><span class="serif">Engineer in practice.</span></h1>
-				<p class="lede">I am Zinuo (Henry) You, a Computer Science PhD candidate at the University of Bristol. I lead modelling research and implementation across UKRI-funded projects spanning generative video, efficient inference, continuous-time models, and evidence-constrained AI systems.</p>
-				<div class="button-row"><a class="button button--primary" href={`mailto:${siteConfig.email}`}>Email me</a><a class="button" href={siteConfig.cvPath}>Download CV</a></div>
-			</div>
-		</div>
-	</header>
-
-	<section class="section section--tint"><div class="shell narrative-grid">
-		<div><p class="eyebrow">How I work</p><h2>Across the whole<br /><span class="serif">research system.</span></h2></div>
-		<div class="prose"><p>My projects typically begin with a modelling question—how a causal video model drifts, where a low-step ODE sampler should spend its evaluations, or how irregular time gaps should enter a latent trajectory. I then build the evaluation and software contracts needed to test the idea without blurring method, data, and protocol.</p><p>That means working from derivation and experimental design through PyTorch implementation, multi-GPU training, Slurm/HPC workflows, programmatic evaluation, and release-quality Python packages. I care about negative results, limitations, and strict failure modes because they make research easier to trust and extend.</p></div>
-	</div></section>
-
-	<section class="section"><div class="shell details-grid">
-		<section><p class="eyebrow">Education</p><div class="timeline">
-			<div><span>2022 — Present</span><h3>PhD, Computer Science</h3><p>University of Bristol</p></div>
-			<div><span>2019 — 2020</span><h3>MSc, Electronic & Electrical Engineering</h3><p>University of Sheffield · Distinction</p></div>
-			<div><span>2015 — 2019</span><h3>Bachelor’s, Electronic Science & Technology</h3><p>Southwest University</p></div>
-		</div></section>
-		<section><p class="eyebrow">Industry</p><div class="timeline"><div><span>Apr — Nov 2021</span><h3>Automotive Engineer Intern</h3><p>Qualcomm · Real-time perception, INT8/NPU deployment, operator compatibility, and performance diagnosis.</p></div></div>
-			<p class="eyebrow skills-label">Technical strengths</p><ul class="skill-list"><li>Transformers, DiT/MMDiT, causal video</li><li>Diffusion, flow matching, ODE/SDE solvers</li><li>LoRA/PEFT, SFT/DPO, vLLM</li><li>PyTorch, H100, Slurm/HPC</li><li>Evaluation, reproducibility, release engineering</li></ul>
-		</section>
-	</div></section>
-
-	<section class="section contact-band"><div class="shell"><p class="eyebrow">Contact</p><h2>Open to research scientist<br />and applied scientist roles.</h2><p class="lede">I am especially interested in teams working on generative video, world models, efficient inference, or research systems where rigorous evaluation matters.</p><div class="button-row"><a class="button button--primary" href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a><a class="button" href={siteConfig.github}>GitHub</a><a class="button" href={siteConfig.scholar}>Scholar</a></div></div></section>
-</BaseLayout>
-
-<style>
-	.about-grid { display: grid; grid-template-columns: .72fr 1.5fr; gap: clamp(42px, 8vw, 110px); align-items: center; }
-	.portrait-placeholder { display: grid; place-items: center; min-height: 520px; border: 1px solid var(--line); border-radius: 48% 48% 24px 24px; background: linear-gradient(155deg, var(--teal-pale), var(--paper-deep)); }
-	.portrait-placeholder span { color: var(--navy); font-family: var(--serif); font-size: 7rem; letter-spacing: -.09em; }
-	.portrait-placeholder small { align-self: end; margin-bottom: 24px; color: var(--ink-soft); font-size: .6rem; font-weight: 740; letter-spacing: .1em; text-transform: uppercase; }
-	.narrative-grid { display: grid; grid-template-columns: .75fr 1.25fr; gap: clamp(50px, 10vw, 140px); }
-	.details-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(46px, 9vw, 120px); }
-	.timeline > div { padding: 25px 0; border-top: 1px solid var(--line); }
-	.timeline span { color: var(--teal); font-size: .66rem; font-weight: 750; letter-spacing: .1em; text-transform: uppercase; }
-	.timeline h3 { margin: 10px 0 5px; font-size: 1.35rem; }
-	.timeline p { color: var(--ink-soft); font-family: var(--serif); }
-	.skills-label { margin-top: 50px; }
-	.skill-list { display: flex; flex-wrap: wrap; gap: 8px; padding: 0; list-style: none; }
-	.skill-list li { padding: 8px 12px; border: 1px solid var(--line); border-radius: 999px; color: var(--ink-soft); font-size: .76rem; }
-	.contact-band { color: var(--paper); background: var(--navy); }
-	.contact-band .eyebrow, .contact-band .lede { color: #b9d9d3; }
-	.contact-band .button { color: var(--paper); border-color: rgba(245,242,234,.55); }
-	.contact-band .button--primary { color: var(--ink); background: var(--paper); }
-	@media (max-width: 820px) { .about-grid, .narrative-grid, .details-grid { grid-template-columns: 1fr; } .portrait-placeholder { max-width: 460px; min-height: 420px; } }
-</style>
+<BaseLayout title="About"><div class="shell"><header class="page-heading"><h1>About me</h1></header>
+<div class="prose"><p>I am Zinuo (Henry) You, a PhD researcher in Engineering Mathematics and Computer Science at the University of Bristol. I work at the intersection of generative modelling, reinforcement learning, and optimization.</p>
+<p>My research spans long-horizon video and world models, corrective transport, continuous-time generative models, and efficient inference. I work across mathematical formulation, PyTorch implementation, multi-GPU experiments, and evaluation.</p>
+<p>Earlier projects explore graph representation learning, black-box Bayesian optimization, and evidence-constrained LLM agents.</p>
+<h2>Education</h2><ul><li><strong>University of Bristol</strong> · PhD in Engineering Mathematics and Computer Science, 2023–present.</li><li><strong>University of Sheffield</strong> · MSc in Electronic and Electrical Engineering, Distinction, 2019–2020.</li><li><strong>Southwest University</strong> · Bachelor’s in Electronic Science and Technology / Solid-State Physics, 2015–2019.</li></ul>
+<p><a href={site.cvPath}>Download my CV</a> · <a href={`mailto:${site.email}`}>{site.email}</a></p></div><Experience/></div></BaseLayout>

@@ -1,59 +1,21 @@
-import { defineCollection } from 'astro:content';
+import { defineCollection, reference } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
-
-const linkSchema = z.object({
-	label: z.string().min(1),
-	url: z.url(),
+const links=z.array(z.object({label:z.string().min(1),url:z.url()})).default([]);
+const projects=defineCollection({
+ loader:glob({base:'./src/content/projects',pattern:'**/*.{md,mdx}'}),
+ schema:z.object({
+ title:z.string(),shortTitle:z.string(),summary:z.string(),
+ group:z.enum(['featured','papers','projects']),order:z.number().int().positive(),
+ status:z.enum(['Working paper','Published','Research project','Open source']),
+ dates:z.string(),role:z.string(),
+ visual:z.enum(['transport','laplace','video','capacity','relations','optimization','decoupled','market','agents']),
+ demo:z.enum(['transport','laplace','capacity','relations','optimization','decoupled']).optional(),
+ publications:z.array(reference('publications')).default([]),links,
+ }),
 });
-
-const mediaSchema = z.object({
-	type: z.enum(['image', 'video']),
-	src: z.string().regex(/^(https?:\/\/|\/)/, 'Media sources must be absolute web URLs or root-relative paths'),
-	poster: z.string().regex(/^(https?:\/\/|\/)/).optional(),
-	alt: z.string().min(1),
-	caption: z.string().min(1),
+const publications=defineCollection({
+ loader:glob({base:'./src/content/publications',pattern:'**/*.md'}),
+ schema:z.object({title:z.string(),authors:z.array(z.string()).min(1),year:z.number().int(),venue:z.string(),highlight:z.string().optional(),summary:z.string(),links}),
 });
-
-const projectSchema = z.object({
-	title: z.string().min(1),
-	tagline: z.string().min(1),
-	status: z.enum(['accepted', 'ongoing', 'open-source', 'published']),
-	dates: z.string().min(1),
-	themes: z.array(z.string().min(1)).min(1),
-	role: z.string().min(1),
-	collaborators: z.array(z.string().min(1)).default([]),
-	problem: z.string().min(1),
-	approach: z.string().min(1),
-	evidence: z.array(z.string().min(1)).min(1),
-	media: z.array(mediaSchema).default([]),
-	visual: z.enum(['video', 'clock', 'laplace', 'code', 'graph', 'market', 'agents']),
-	links: z.array(linkSchema).default([]),
-	disclosure: z.string().optional(),
-	featuredOrder: z.number().int().positive().optional(),
-});
-
-const projects = defineCollection({
-	loader: glob({ base: './src/content/projects', pattern: '**/*.{md,mdx}' }),
-	schema: projectSchema,
-});
-
-const publicationSchema = z.object({
-	title: z.string().min(1),
-	authors: z.array(z.string().min(1)).min(1),
-	year: z.number().int().min(2000),
-	venue: z.string().min(1),
-	status: z.enum(['accepted', 'published', 'preprint', 'under-review']),
-	highlight: z.string().optional(),
-	summary: z.string().min(1),
-	links: z.array(linkSchema).default([]),
-});
-
-const publications = defineCollection({
-	loader: glob({ base: './src/content/publications', pattern: '**/*.{md,mdx}' }),
-	schema: publicationSchema,
-});
-
-export const collections = { projects, publications };
-export type ProjectEntry = z.infer<typeof projectSchema>;
-export type PublicationEntry = z.infer<typeof publicationSchema>;
+export const collections={projects,publications};

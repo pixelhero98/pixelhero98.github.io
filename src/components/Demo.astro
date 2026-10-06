@@ -1,0 +1,40 @@
+---
+import {specs,defaults,renderDemo,type DemoId} from '../lib/demos';
+interface Props{id:DemoId;}
+const {id}=Astro.props;const spec=specs[id];const initial=renderDemo(id,defaults(id));
+---
+<section id="demo" class="demo" data-demo={id} aria-labelledby="demo-heading">
+<div class="demo-heading"><span class="label">Interactive toy experiment</span><h2 id="demo-heading">{spec.title}</h2><p>{spec.lead}</p></div>
+<form class="controls" data-controls hidden aria-label="Experiment controls">
+{spec.controls.map(c=><label class:list={['control',{'check-control':c.checkbox}]} for={id+'-'+c.key}>
+{c.checkbox?<><input type="checkbox" id={id+'-'+c.key} name={c.key} checked={Boolean(c.value)}/><span>{c.label}</span></>:<><span>{c.label}<output for={id+'-'+c.key} data-value={c.key}>{c.value}</output></span><input type="range" id={id+'-'+c.key} name={c.key} min={c.min} max={c.max} step={c.step} value={c.value}/></>}
+</label>)}
+<div class="demo-actions">{id==='decoupled'&&<button type="button" data-step>Next diffusion step</button>}<button type="button" data-reset>Reset</button></div>
+</form>
+<div class="chart" data-chart set:html={initial.svg}/>
+<p class="legend">{spec.legend}</p><p class="readout" data-summary role="status" aria-live="polite">{initial.summary}</p>
+<noscript><p>This is the default synthetic example. Enable JavaScript to adjust its controls.</p></noscript>
+<details><summary>How this toy works</summary><p>{spec.formula}</p><p>{spec.limitation}</p></details>
+<p class="demo-note">Synthetic illustration · Not a trained-model output or a published benchmark.</p>
+</section>
+<script>
+import {specs,defaults,renderDemo,type DemoId} from '../lib/demos';
+for(const element of document.querySelectorAll<HTMLElement>('[data-demo]')){
+ const id=element.dataset.demo as DemoId,form=element.querySelector<HTMLFormElement>('form')!,chart=element.querySelector<HTMLElement>('[data-chart]')!,summary=element.querySelector<HTMLElement>('[data-summary]')!;
+ const read=()=>Object.fromEntries(specs[id].controls.map(c=>{const input=form.elements.namedItem(c.key) as HTMLInputElement;return[c.key,c.checkbox?Number(input.checked):Number(input.value)];}));
+ const update=()=>{const values=read(),result=renderDemo(id,values);chart.innerHTML=result.svg;summary.textContent=result.summary;
+ for(const output of form.querySelectorAll<HTMLOutputElement>('output'))output.value=String(values[output.dataset.value!]);
+ const next=form.querySelector<HTMLButtonElement>('[data-step]');if(next)next.disabled=values.steps>=12;};
+ form.addEventListener('submit',e=>e.preventDefault());form.addEventListener('input',update);
+ form.querySelector('[data-reset]')!.addEventListener('click',()=>{const values=defaults(id);for(const c of specs[id].controls){const input=form.elements.namedItem(c.key) as HTMLInputElement;if(c.checkbox)input.checked=Boolean(values[c.key]);else input.value=String(values[c.key]);}update();});
+ form.querySelector('[data-step]')?.addEventListener('click',()=>{const input=form.elements.namedItem('steps') as HTMLInputElement;input.value=String(Math.min(12,Number(input.value)+1));update();});
+ form.hidden=false;
+}
+</script>
+<style>
+.demo{margin:34px 0 40px;border:1px solid var(--line);border-radius:6px;background:#fff;overflow:hidden}.demo-heading{padding:25px 25px 0}.demo-heading h2{margin:8px 0 10px}.demo-heading p{font-size:.87rem;color:var(--muted);max-width:720px}
+.controls{display:flex;flex-wrap:wrap;gap:20px 30px;padding:20px 25px;background:var(--wash);border-block:1px solid var(--line);margin-top:20px}.controls[hidden]{display:none}.control{flex:1 1 180px;min-width:0;font-size:.78rem}.control>span{display:flex;justify-content:space-between;gap:12px}.control output{font-variant-numeric:tabular-nums;color:var(--accent);font-weight:600}.control input[type=range]{width:100%;margin:12px 0 0;accent-color:var(--accent);cursor:pointer}.check-control{display:flex;align-items:center;gap:9px;flex-basis:210px}.check-control input{width:17px;height:17px;accent-color:var(--accent)}
+.demo-actions{display:flex;align-items:end;gap:10px}.demo-actions button{font-size:.77rem}.demo-actions button:disabled{opacity:.5;cursor:default}.chart{padding:12px 20px 0}.chart :global(svg){display:block;width:100%;height:auto}.legend{font-size:.73rem;color:var(--muted);padding:0 25px;margin-top:5px}.readout{font-size:.82rem;margin:16px 25px;padding:14px;background:var(--wash);font-variant-numeric:tabular-nums}
+details{padding:0 25px;font-size:.8rem}summary{cursor:pointer;color:var(--accent);padding:7px 0}details p{margin-top:10px;max-width:720px}.demo-note{font-size:.7rem;color:var(--muted);padding:12px 25px;border-top:1px solid var(--line);margin:17px 0 0}.demo noscript p{padding:0 25px}
+@media(max-width:620px){.demo-heading{padding:18px 16px 0}.controls{padding:16px;gap:15px}.chart{padding:8px 0 0}.readout{margin:14px 16px}.legend,details,.demo-note{padding-inline:16px}.control{flex-basis:130px}}
+</style>

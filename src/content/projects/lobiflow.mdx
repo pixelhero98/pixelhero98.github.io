@@ -1,19 +1,17 @@
 ---
-title: LoBiFlow
-tagline: History-conditioned flow matching for generating level-2 limit order books.
-status: open-source
+title: "LoBiFlow"
+shortTitle: "LoBiFlow"
+summary: "History-conditioned flow matching for generating level-2 limit order books."
+group: "projects"
+order: 8
+status: "Open source"
 dates: "2026"
-themes: [Flow matching, Financial sequences, Generative modelling]
-role: Public repository maintainer
-collaborators: []
-problem: Limit-order-book generation must preserve temporal context and market microstructure rather than model isolated snapshots.
-approach: Condition a flow-matching generator on chronological order-book history with reproducible data, training, and benchmark entry points.
-evidence:
-  - Public package includes models, chronological dataset builders, preparation tools, tests, and result workflows.
-visual: market
-links:
-  - label: Code
-    url: https://github.com/pixelhero98/LoBiFlows
+role: "Public repository maintainer"
+visual: "market"
+links: [{"label":"Code","url":"https://github.com/pixelhero98/LoBiFlows"}]
 ---
 
-The repository packages the research workflow from raw-data preparation through training and evaluation, with optional dependencies separated by use case.
+## Generating structured market sequences
+Limit order books contain multiple price levels and a temporal history. LoBiFlow conditions a flow-matching generator on that history to model structured market sequences.
+
+The public repository includes chronological dataset preparation, model implementations, and training and evaluation entry points. The thumbnail is a schematic order book, not a generated market sample.

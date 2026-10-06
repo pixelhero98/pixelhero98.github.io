@@ -1,11 +1,8 @@
 ---
 title: "DGDNN: Decoupled Graph Diffusion Neural Network for Stock Movement Prediction"
-authors: [Zinuo You, Zhengyang Shi, Hao Bo, John Cartlidge, Liping Zhang, Yu Ge]
+authors: ["Zinuo You","Zijian Shi","Hongbo Bo","John Cartlidge","Li Zhang","Yan Ge"]
 year: 2024
-venue: ICAART 2024
-status: published
-summary: Decoupled propagation and transformation for representation learning over dynamic financial graphs.
-links:
-  - label: Code
-    url: https://github.com/pixelhero98/DGDNN
+venue: "ICAART 2024"
+summary: "Separate representation learning and graph diffusion over automatically constructed stock graphs."
+links: [{"label":"Paper","url":"https://arxiv.org/abs/2401.01846"},{"label":"Code","url":"https://github.com/pixelhero98/DGDNN"}]
 ---

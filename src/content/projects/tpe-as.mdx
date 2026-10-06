@@ -1,20 +1,22 @@
 ---
-title: TPE-AS
-tagline: Adaptive Bayesian optimization for expensive, noisy portfolio-model tuning.
-status: published
-dates: 2024 – 2025
-themes: [Bayesian optimization, Portfolio models, Black-box search]
-role: Lead researcher and implementation author
-collaborators: [John Cartlidge, Kevin Elliott, Meng Ge, David Gold]
-problem: Private portfolio models expose mixed, expensive, noisy objectives with limited evaluation budgets and no gradient access.
-approach: Add a budget-dependent mean-variance objective and clipped importance correction to good/bad Parzen-density search.
-evidence:
-  - Published at ICAAI 2025.
-  - Public repository reproduces the optimizer mechanics with transparent synthetic experiments rather than private financial results.
-visual: market
-links:
-  - label: Code
-    url: https://github.com/pixelhero98/TPE-AS
+title: "TPE-AS"
+shortTitle: "TPE-AS"
+summary: "Adjust variance pressure as an optimization budget is spent on an expensive, noisy black-box objective."
+group: "papers"
+order: 6
+status: "Published"
+dates: "Jun 2024–Apr 2025"
+role: "Lead researcher and implementation author"
+visual: "optimization"
+demo: "optimization"
+publications: ["tpe-as"]
 ---
 
-TPE-AS was designed around a controlled evaluator that isolates private models, data, and backtesting infrastructure. The public artifact focuses on reusable optimizer mechanics and synthetic black-box benchmarks.
+## Search under a limited budget
+An expensive evaluator may produce an attractive score by chance. Optimization must balance high observed utility against uncertain outcomes while spending a finite number of evaluations.
+
+## An adaptive objective
+TPE-AS augments Parzen-density search with a budget-dependent mean–variance objective and clipped importance correction. The public implementation provides reusable optimizer mechanics and synthetic benchmarks.
+
+## Reading the demonstration
+The toy objective has a broad, stable peak and a narrow, noisy peak. A fixed, seeded set of evaluated candidates is ranked by sample mean minus a scheduled variance penalty. Move the budget-progress control to see the selected incumbent change. This isolates adaptive scoring; it does not implement Parzen proposal generation, importance correction, or a financial backtest.

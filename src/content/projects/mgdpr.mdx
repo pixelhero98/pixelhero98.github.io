@@ -1,20 +1,22 @@
 ---
-title: MGDPR
-tagline: Multi-relational graph diffusion with parallel retention for stock-trend classification.
-status: published
-dates: 2023 – 2024
-themes: [Multi-relational graphs, Retention, Financial ML]
-role: First author and implementation author
-collaborators: [Peng Zhang, Jin Zheng, John Cartlidge]
-problem: Financial graphs contain multiple relationship types whose relevance changes across stocks and time.
-approach: Combine relation-aware graph diffusion with parallel retention to preserve complementary relational signals.
-evidence:
-  - Published at ICASSP 2024.
-  - Public repository provides the official implementation.
-visual: graph
-links:
-  - label: Code
-    url: https://github.com/pixelhero98/MGDPR
+title: "MGDPR"
+shortTitle: "MGDPR"
+summary: "Combine multiple relation graphs with a retained feature branch for stock-trend representation learning."
+group: "papers"
+order: 5
+status: "Published"
+dates: "2023–2024"
+role: "First author and implementation author"
+visual: "relations"
+demo: "relations"
+publications: ["mgdpr"]
 ---
 
-MGDPR models several stock-relation graphs in parallel and combines their representations through retention rather than collapsing every relation into one adjacency structure.
+## More than one kind of relationship
+Stock relations vary over time and can depend on the horizon at which they are measured. A single static relation graph cannot capture all of that structure.
+
+## Diffusion and retained representations
+MGDPR constructs multiple stock graphs, refines relations through diffusion, and combines diffused features with retained representations. Parallel retention helps connect relational context to distinctive node features.
+
+## Reading the demonstration
+Two hand-built relation graphs carry a synthetic scalar signal. Toggle either graph to inspect its contribution, then blend the diffused signal with the original features. This linear blend illustrates the separate branches; the paper's learned parallel-retention layer uses projections and interactions rather than this scalar blend. No stock returns or predictions are shown.

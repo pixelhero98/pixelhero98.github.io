@@ -1,22 +1,22 @@
 ---
-title: C3E — GNN Capacity Estimation
-tagline: Estimating hidden width and propagation depth from a channel-capacity view of graph representation learning.
-status: published
-dates: 2023 – 2025
-themes: [Graph neural networks, Architecture search, Information theory]
-role: First author and lead implementation author
-collaborators: [Jin Zheng, John Cartlidge]
-problem: GNN width and depth are often chosen heuristically even though both control information compression and over-squashing.
-approach: Model spectral GNN propagation as a communication channel and estimate capacity-constrained architecture settings through nonlinear optimization.
-evidence:
-  - Published at AAAI 2026.
-  - Evaluated on nine public graph-learning datasets.
-visual: graph
-links:
-  - label: Paper
-    url: https://arxiv.org/abs/2511.06443
-  - label: Code
-    url: https://github.com/pixelhero98/C3E
+title: "C3E"
+shortTitle: "C3E"
+summary: "Choose GNN width and depth by treating representation learning as an information channel."
+group: "papers"
+order: 4
+status: "Published"
+dates: "2023–2025"
+role: "First author and lead implementation author"
+visual: "capacity"
+demo: "capacity"
+publications: ["c3e"]
 ---
 
-C3E connects graph structure, propagation, hidden dimension, and depth through an information-capacity formulation. The result is an auditable architecture-selection mechanism rather than a broad brute-force search.
+## How much information survives propagation?
+Hidden width and depth determine how a graph neural network represents and compresses signals. Choosing them only by convention can leave the architecture poorly matched to the graph.
+
+## A capacity-based view
+C3E models spectral graph propagation as a communication channel and formulates architecture selection as a constrained optimization problem. It connects graph structure, propagation, and representation size.
+
+## Reading the demonstration
+A small path graph carries eight orthogonal signals. Lazy graph diffusion attenuates its spectral modes; width limits how many channels are kept. The displayed Gaussian-channel capacity proxy is calculated for this toy system. It is not the complete C3E estimator, and it does not equate over-squashing with over-smoothing or claim that every graph behaves this way.

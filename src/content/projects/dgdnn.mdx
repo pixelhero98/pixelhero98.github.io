@@ -1,20 +1,22 @@
 ---
-title: DGDNN
-tagline: Decoupled graph diffusion for multi-stock movement prediction.
-status: published
-dates: 2023 – 2024
-themes: [Graph diffusion, Financial ML, Representation learning]
-role: First author and implementation author
-collaborators: [Zhengyang Shi, Hao Bo, John Cartlidge, Liping Zhang, Yu Ge]
-problem: Stock relationships and temporal representations can become entangled when graph propagation and feature transformation are learned together.
-approach: Decouple graph diffusion from representation transformation to control how relational information is mixed.
-evidence:
-  - Published at ICAART 2024 with an extended LNCS version in 2025.
-  - Public implementation includes preprocessing, modelling, and experiment code.
-visual: graph
-links:
-  - label: Code
-    url: https://github.com/pixelhero98/DGDNN
+title: "DGDNN"
+shortTitle: "DGDNN"
+summary: "Keep feature transformation separate from relational mixing over a dynamic stock graph."
+group: "papers"
+order: 7
+status: "Published"
+dates: "2023–2025"
+role: "First author and implementation author"
+visual: "decoupled"
+demo: "decoupled"
+publications: ["dgdnn","dgdnn-lncs"]
 ---
 
-DGDNN separates propagation from transformation to make relational mixing more controllable in dynamic stock graphs.
+## Relational and individual structure
+Stocks carry individual temporal features as well as changing relationships to other stocks. Repeatedly interleaving transformations with graph propagation can make those roles hard to separate.
+
+## Decoupled representation learning
+DGDNN builds dynamic graphs using entropy-driven edge generation, learns dependencies through graph diffusion, and separates the representation-learning stage from relational propagation. The extended publication develops the same research direction.
+
+## Reading the demonstration
+Start with six signed features, apply a fixed nonlinear encoder once, then diffuse its output over a ring. Controls vary the encoder gain and the number of diffusion steps. This is an operational illustration of decoupling, not the trained encoder, learned graph, or full DGDNN architecture.

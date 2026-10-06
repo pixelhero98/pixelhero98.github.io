@@ -1,33 +1,10 @@
 ---
-import { getCollection } from 'astro:content';
+import {getCollection} from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PublicationRow from '../components/PublicationRow.astro';
-import { siteConfig } from '../config';
-const publications = (await getCollection('publications')).sort((a, b) => b.data.year - a.data.year || a.data.title.localeCompare(b.data.title));
-const jsonLd = publications.map((publication) => ({
-	'@context': 'https://schema.org',
-	'@type': 'ScholarlyArticle',
-	headline: publication.data.title,
-	author: publication.data.authors.map((name) => ({ '@type': 'Person', name })),
-	datePublished: String(publication.data.year),
-	isPartOf: publication.data.venue,
-	url: publication.data.links.find((link) => link.label === 'Paper')?.url,
-}));
+import {researchItems} from '../lib/research';
+const publications=(await getCollection('publications')).sort((a,b)=>b.data.year-a.data.year||a.data.title.localeCompare(b.data.title));
+const items=await researchItems();
+const jsonLd=publications.map(p=>({'@context':'https://schema.org','@type':'ScholarlyArticle',headline:p.data.title,author:p.data.authors.map(name=>({'@type':'Person',name})),datePublished:String(p.data.year),isPartOf:{'@type':'PublicationVolume',name:p.data.venue},url:p.data.links.find(l=>l.label==='Paper')?.url}));
 ---
-
-<BaseLayout title="Publications" description="Publications by Zinuo You in generative modelling, graph learning, and financial machine learning." jsonLd={jsonLd}>
-	<header class="section page-hero">
-		<div class="shell hero-grid">
-			<div><p class="eyebrow">Publications</p><h1>Ideas, evidence,<br /><span class="serif">and public artifacts.</span></h1></div>
-			<div><p class="lede">Accepted and published work is labelled directly. Anonymous review work is described without naming the reviewing venue.</p><a class="button" href={siteConfig.scholar}>Google Scholar</a></div>
-		</div>
-	</header>
-	<section class="section--compact"><div class="shell">{publications.map((publication) => <PublicationRow publication={publication} />)}</div></section>
-</BaseLayout>
-
-<style>
-	.page-hero { padding-bottom: 40px; }
-	.hero-grid { display: grid; grid-template-columns: 1.4fr .7fr; gap: 60px; align-items: end; }
-	.hero-grid .button { margin-top: 12px; }
-	@media (max-width: 760px) { .hero-grid { grid-template-columns: 1fr; } }
-</style>
+<BaseLayout title="Publications" jsonLd={jsonLd}><div class="shell"><header class="page-heading"><h1>Publications</h1><p>Papers on generative modelling, graph representation learning, and optimization.</p></header>{publications.map(publication=><PublicationRow publication={publication} projectId={items.find(item=>item.publications.some(p=>p.id===publication.id))?.project.id}/>)}</div></BaseLayout>

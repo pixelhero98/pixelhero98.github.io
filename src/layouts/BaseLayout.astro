@@ -31,7 +31,7 @@ const defaultJsonLd = {
 	email: `mailto:${siteConfig.email}`,
 	affiliation: { '@type': 'CollegeOrUniversity', name: 'University of Bristol' },
 	sameAs: [siteConfig.github, siteConfig.scholar],
-	jobTitle: 'Generative systems researcher',
+	jobTitle: 'PhD researcher',
 };
 ---
 
@@ -42,9 +42,8 @@ const defaultJsonLd = {
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="generator" content={Astro.generator} />
 		<meta name="description" content={description} />
-		<meta name="theme-color" content="#f5f2ea" />
+		<meta name="theme-color" content="#ffffff" />
 		<link rel="preload" href="/fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
-		<link rel="preload" href="/fonts/source-serif-4-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="canonical" href={canonical} />
 		<title>{pageTitle}</title>
@@ -63,7 +62,7 @@ const defaultJsonLd = {
 	<body>
 		<a class="skip-link" href="#main">Skip to content</a>
 		<Header />
-		<main id="main" class="page"><slot /></main>
+		<main id="main" class="page" tabindex="-1"><slot /></main>
 		<Footer />
 	</body>
 </html>

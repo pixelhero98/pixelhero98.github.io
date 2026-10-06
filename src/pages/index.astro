@@ -1,140 +1,18 @@
 ---
-import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import SectionHeading from '../components/SectionHeading.astro';
-import ProjectCard from '../components/ProjectCard.astro';
-import PublicationRow from '../components/PublicationRow.astro';
-import { siteConfig } from '../config';
-
-const projects = await getCollection('projects');
-const featured = projects
-	.filter((project) => project.data.featuredOrder)
-	.sort((a, b) => (a.data.featuredOrder ?? 99) - (b.data.featuredOrder ?? 99));
-const publications = (await getCollection('publications'))
-	.sort((a, b) => b.data.year - a.data.year)
-	.slice(0, 3);
+import ResearchRow from '../components/ResearchRow.astro';
+import Experience from '../components/Experience.astro';
+import {researchItems} from '../lib/research';
+import {siteConfig as site} from '../config';
+const items=await researchItems();
+const groups=[{id:'featured',title:'Selected research'},{id:'papers',title:'More papers'},{id:'projects',title:'Projects'}];
 ---
-
-<BaseLayout>
-	<section class="hero">
-		<div class="shell hero-grid">
-			<div class="hero-copy">
-				<div class="status">{siteConfig.availability}</div>
-				<p class="hero-name">Zinuo <span>(Henry)</span> You</p>
-				<h1>Generative systems<br /><span class="serif">that hold their course.</span></h1>
-				<p class="hero-lede">I research video and world models, low-step generative inference, and continuous-time learning—turning ambitious models into systems that remain efficient, controllable, and measurable.</p>
-				<div class="button-row">
-					<a class="button button--primary" href="/work/">Explore research</a>
-					<a class="button" href={siteConfig.cvPath}>Download CV</a>
-				</div>
-			</div>
-
-			<div class="hero-signal" aria-label="Research themes: model, time, and inference budget">
-				<div class="signal-orbit orbit--outer"><span>MODEL</span><i></i></div>
-				<div class="signal-orbit orbit--middle"><span>TIME</span><i></i></div>
-				<div class="signal-orbit orbit--inner"><span>NFE</span><i></i></div>
-				<div class="signal-core">ρ(t)</div>
-				<p>Learn the path.<br />Preserve the system.</p>
-			</div>
-		</div>
-		<div class="shell proof-strip" aria-label="Selected research highlights">
-			<div><strong>ICML 2026</strong><span>Spotlight</span></div>
-			<div><strong>AAAI 2026</strong><span>First author</span></div>
-			<div><strong>ICASSP 2024</strong><span>First author</span></div>
-			<div><strong>3 UKRI projects</strong><span>Research lead</span></div>
-		</div>
-	</section>
-
-	<section class="section section--tint">
-		<div class="shell">
-			<SectionHeading eyebrow="Research agenda" title="Three connected ways to make generation more dependable." />
-			<div class="themes">
-				<article><span>01</span><h3>Video & world models</h3><p>Understand how causal generation drifts across long rollouts, then intervene where memory and representation errors compound.</p></article>
-				<article><span>02</span><h3>Efficient inference</h3><p>Learn where a fixed solver budget should be spent instead of accepting a uniform schedule as the default.</p></article>
-				<article><span>03</span><h3>Continuous-time learning</h3><p>Model irregular observations and latent trajectories without erasing the structure carried by time itself.</p></article>
-			</div>
-		</div>
-	</section>
-
-	<section class="section">
-		<div class="shell">
-			<SectionHeading eyebrow="Selected work" title="Research told as systems, not abstracts." description="Each case study starts with the failure mode, makes the modelling choice legible, and separates public evidence from ongoing work." actionHref="/work/" actionLabel="View all work" />
-			<div class="featured-grid">
-				{featured.map((project, index) => <div class:list={['featured-item', `featured-item--${index + 1}`]}><ProjectCard project={project} /></div>)}
-			</div>
-		</div>
-	</section>
-
-	<section class="section section--tint">
-		<div class="shell">
-			<SectionHeading eyebrow="Selected publications" title="Published research, with implementation close at hand." actionHref="/publications/" actionLabel="All publications" />
-			<div>{publications.map((publication) => <PublicationRow publication={publication} />)}</div>
-		</div>
-	</section>
-
-	<section class="section about-band">
-		<div class="shell about-grid">
-			<div class="portrait-placeholder" aria-label="Portrait placeholder awaiting an approved professional headshot">
-				<span>ZY</span><small>Approved portrait<br />to be added</small>
-			</div>
-			<div>
-				<p class="eyebrow">About</p>
-				<h2>Research direction,<br /><span class="serif">engineering discipline.</span></h2>
-				<p class="lede">I am a Computer Science PhD candidate at the University of Bristol, leading modelling and implementation across UKRI-funded projects. My work moves between mathematical formulation, large-scale experiments, and the release-quality code needed to make results useful.</p>
-				<div class="button-row"><a class="button button--primary" href="/about/">More about me</a><a class="button" href={`mailto:${siteConfig.email}`}>Start a conversation</a></div>
-			</div>
-		</div>
-	</section>
-</BaseLayout>
-
-<style>
-	.hero { padding: clamp(66px, 8vw, 112px) 0 0; overflow: hidden; }
-	.hero-grid { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(330px, .65fr); align-items: center; gap: clamp(44px, 8vw, 110px); }
-	.hero-name { margin: 30px 0 12px; color: var(--navy); font-size: .78rem; font-weight: 760; letter-spacing: .14em; text-transform: uppercase; }
-	.hero-name span { color: var(--teal); }
-	.hero h1 { max-width: 970px; margin-bottom: 28px; }
-	.hero-lede { max-width: 780px; color: var(--ink-soft); font-family: var(--serif); font-size: clamp(1.18rem, 2vw, 1.55rem); line-height: 1.48; }
-	.hero-signal { position: relative; aspect-ratio: 1; min-width: 330px; border-radius: 50%; }
-	.signal-orbit { position: absolute; border: 1px solid rgba(18,58,74,.28); border-radius: 50%; animation: orbit 22s linear infinite; }
-	.signal-orbit span { position: absolute; left: 50%; top: -10px; padding: 2px 7px; color: var(--navy); background: var(--paper); font-size: .58rem; font-weight: 780; letter-spacing: .13em; transform: translateX(-50%); }
-	.signal-orbit i { position: absolute; left: 14%; top: 14%; width: 12px; aspect-ratio: 1; border-radius: 50%; background: var(--teal); box-shadow: 0 0 0 8px rgba(43,122,120,.11); }
-	.orbit--outer { inset: 2%; } .orbit--middle { inset: 18%; animation-direction: reverse; animation-duration: 16s; } .orbit--inner { inset: 34%; animation-duration: 11s; }
-	.signal-core { position: absolute; left: 50%; top: 50%; display: grid; place-items: center; width: 76px; aspect-ratio: 1; border-radius: 50%; color: var(--paper); background: var(--ink); font-family: var(--serif); font-size: 1.35rem; transform: translate(-50%,-50%); }
-	.hero-signal > p { position: absolute; right: 1%; bottom: 11%; margin: 0; color: var(--ink-soft); font-size: .67rem; font-weight: 650; letter-spacing: .08em; line-height: 1.4; text-align: right; text-transform: uppercase; }
-	.proof-strip { display: grid; grid-template-columns: repeat(4, 1fr); margin-top: clamp(64px, 9vw, 120px); border-top: 1px solid var(--line); }
-	.proof-strip div { padding: 24px 18px 28px 0; border-right: 1px solid var(--line); }
-	.proof-strip div + div { padding-left: 22px; }
-	.proof-strip strong, .proof-strip span { display: block; }
-	.proof-strip strong { font-size: .8rem; }
-	.proof-strip span { margin-top: 3px; color: var(--ink-soft); font-family: var(--serif); font-size: .84rem; }
-	.themes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border-top: 1px solid var(--line); }
-	.themes article { padding: 28px 34px 20px 0; }
-	.themes article + article { padding-left: 34px; border-left: 1px solid var(--line); }
-	.themes span { color: var(--teal); font-family: var(--serif); font-size: .9rem; }
-	.themes h3 { margin: 38px 0 14px; }
-	.themes p { color: var(--ink-soft); font-family: var(--serif); }
-	.featured-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 54px 26px; }
-	.featured-item--1 { grid-column: 1 / -1; }
-	.featured-item--1 :global(.project-card) { display: grid; grid-template-columns: 1.35fr 1fr; gap: 30px; align-items: center; }
-	.featured-item--1 :global(.visual) { min-height: 430px; }
-	.about-grid { display: grid; grid-template-columns: .75fr 1.65fr; gap: clamp(42px, 8vw, 110px); align-items: center; }
-	.portrait-placeholder { display: grid; place-items: center; min-height: 420px; border: 1px solid var(--line); border-radius: 45% 45% 22px 22px; background: linear-gradient(155deg, var(--teal-pale), var(--paper-deep)); }
-	.portrait-placeholder span { color: var(--navy); font-family: var(--serif); font-size: 6rem; letter-spacing: -.08em; }
-	.portrait-placeholder small { align-self: end; margin-bottom: 20px; color: var(--ink-soft); font-size: .62rem; font-weight: 700; letter-spacing: .08em; text-align: center; text-transform: uppercase; }
-	@keyframes orbit { to { transform: rotate(360deg); } }
-	@media (max-width: 900px) {
-		.hero-grid { grid-template-columns: 1fr; }
-		.hero-signal { width: min(80vw, 430px); justify-self: center; }
-		.featured-item--1 :global(.project-card) { grid-template-columns: 1fr; }
-		.featured-item--1 :global(.visual) { min-height: 300px; }
-		.about-grid { grid-template-columns: 1fr; }
-		.portrait-placeholder { max-width: 460px; min-height: 360px; }
-	}
-	@media (max-width: 700px) {
-		.proof-strip, .themes, .featured-grid { grid-template-columns: 1fr; }
-		.proof-strip div { border-right: 0; border-bottom: 1px solid var(--line); }
-		.proof-strip div + div { padding-left: 0; }
-		.themes article + article { padding-left: 0; border-left: 0; border-top: 1px solid var(--line); }
-		.featured-item--1 { grid-column: auto; }
-	}
-</style>
+<BaseLayout><div class="shell"><section class="intro" aria-labelledby="name">
+<h1 id="name">Zinuo <span style="font-weight:400">(Henry)</span> You</h1><p class="affiliation">PhD researcher · University of Bristol</p>
+<p>I work on <strong>generative modelling, world models, and optimization</strong>. My research explores how to generate coherent sequences over long horizons, improve generative models through reinforcement learning and distillation, and make inference more efficient.</p>
+<p>I am pursuing a PhD in Engineering Mathematics and Computer Science. My earlier work studies graph representation learning and Bayesian optimization.</p>
+<div class="links"><a href={`mailto:${site.email}`}>Email</a><a href={site.scholar}>Google Scholar</a><a href={site.github}>GitHub</a><a href={site.cvPath}>CV ↓</a></div></section>
+{groups.map(group=><section id={group.id} class="section" aria-labelledby={group.id+'-heading'}>
+<div class="section-heading"><h2 id={group.id+'-heading'}>{group.title}</h2>{group.id==='papers'&&<a href="/publications/">All publications ↗</a>}{group.id==='featured'&&<span class="meta">Ideas, methods & interactive explanations</span>}</div>
+{items.filter(item=>item.project.data.group===group.id).map(item=><ResearchRow item={item}/>)}</section>)}
+<Experience/></div></BaseLayout>

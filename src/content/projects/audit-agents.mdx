@@ -1,23 +1,20 @@
 ---
-title: Evidence-Constrained Audit Agents
-tagline: Building traceable agent foundations for restricted-domain financial and corporate-filing analysis.
-status: ongoing
-dates: Feb 2026 – Present
-themes: [LLM agents, Evidence systems, Evaluation]
-role: Research and engineering lead on the UKRI project
-collaborators: [UKRI project partners]
-problem: Audit agents must answer complex questions without inventing facts, crossing evidence boundaries, or hiding how a conclusion was produced.
-approach: Combine canonical fact and narrative layers with deterministic validators, task specifications, evidence-bearing answers, and programmatic evaluation.
-evidence:
-  - The public AuditOps repository implements open corpus, canonical evidence, benchmark, and task-generation foundations.
-  - Private UKRI modelling and evaluation results are not represented as capabilities of the public repository.
-visual: agents
-disclosure: The public AuditOps implementation and the private UKRI agent programme are related but not equivalent. Companies House ingestion and multi-agent fine-tuning remain planned in the public repository.
-links:
-  - label: Public foundation
-    url: https://github.com/pixelhero98/AuditOps
+title: "Evidence-Constrained Audit Agents"
+shortTitle: "Audit agents"
+summary: "Build traceable answers that connect retrieval, numerical reasoning, executable computation, and evidence."
+group: "projects"
+order: 9
+status: "Research project"
+dates: "Feb–Oct 2026"
+role: "Student Research Associate, EPSRC"
+visual: "agents"
+links: [{"label":"Public foundation","url":"https://github.com/pixelhero98/AuditOps"}]
 ---
 
-This work treats evidence as a system contract rather than a prompt instruction. Public AuditOps components focus on corpus ingestion, canonical facts and narratives, deterministic validation, benchmark generation, and traceable answer objects.
+## Answers with an evidence trail
+Audit questions require more than fluent prose. An answer must identify its supporting sources, perform calculations consistently, and refuse when the evidence is insufficient.
 
-The restricted UKRI programme includes additional private data, modelling, and evaluation work. Those results are deliberately kept separate from claims about the public codebase.
+## Research and public software
+The EPSRC project studies restricted-domain audit agents, parameter-efficient post-training, and programmatic evaluation. Public AuditOps provides related corpus, evidence, validation, and benchmark foundations.
+
+The private research programme and the public repository have different scopes. Private datasets and research performance are not represented as capabilities of the public software.

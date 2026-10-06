@@ -1,0 +1,15 @@
+---
+import ResearchVisual from './ResearchVisual.astro';
+import {researchLinks,type ResearchItem} from '../lib/research';
+interface Props{item:ResearchItem;}
+const {item}=Astro.props;const {project,publications}=item;
+const primary=publications[0]?.data;const href=`/work/${project.id}/`;
+---
+<article class:list={['research-row',{featured:project.data.group==='featured'}]}>
+<a class="preview" href={href} aria-label={`Explore ${project.data.shortTitle}`}><ResearchVisual type={project.data.visual}/></a>
+<div><div class="meta">{primary?.venue??project.data.status}{primary?.highlight&&<> · <span class="highlight">{primary.highlight}</span></>}</div>
+<h3><a href={href}>{primary?.title??project.data.title}</a></h3>
+{primary&&<div class="authors">{primary.authors.map((author,index)=><>{index>0?', ':''}{author==='Zinuo You'?<strong>{author}</strong>:author}</>)}</div>}
+<p class="summary">{project.data.summary}</p><div class="links">{researchLinks(item).map(link=><a href={link.url}>{link.label}</a>)}<a href={project.data.demo?href+'#demo':href}>{project.data.demo?'Demo & explanation':'Project details'} <span aria-hidden="true">↗</span></a></div>
+{publications.slice(1).map(pub=><p class="extension">Extended version · {pub.data.venue}: <a href={pub.data.links.find(link=>link.label==='Paper')?.url}>{pub.data.title}</a></p>)}
+</div></article>

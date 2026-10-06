@@ -1,80 +1,24 @@
 ---
-import { getCollection, render, type CollectionEntry } from 'astro:content';
+import {render} from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import ProjectVisual from '../../components/ProjectVisual.astro';
-
-export async function getStaticPaths() {
-	const projects = await getCollection('projects');
-	return projects.map((project) => ({ params: { id: project.id }, props: { project } }));
-}
-
-interface Props { project: CollectionEntry<'projects'>; }
-const { project } = Astro.props;
-const { Content } = await render(project);
-const jsonLd = {
-	'@context': 'https://schema.org',
-	'@type': 'CreativeWork',
-	name: project.data.title,
-	description: project.data.tagline,
-	author: { '@type': 'Person', name: 'Zinuo You' },
-	url: new URL(`/work/${project.id}/`, 'https://zinuoyou.com').href,
-};
+import Demo from '../../components/Demo.astro';
+import ResearchVisual from '../../components/ResearchVisual.astro';
+import {researchItems,researchLinks,type ResearchItem} from '../../lib/research';
+import {siteConfig} from '../../config';
+export async function getStaticPaths(){return(await researchItems()).map(item=>({params:{id:item.project.id},props:{item}}));}
+interface Props{item:ResearchItem;}
+const {item}=Astro.props;const {project,publications}=item;const primary=publications[0]?.data;
+const title=primary?.title??project.data.title;const {Content}=await render(project);
+const jsonLd={'@context':'https://schema.org','@type':primary?'ScholarlyArticle':'CreativeWork',name:title,description:project.data.summary,author:(primary?.authors??['Zinuo You']).map(name=>({'@type':'Person',name})),url:new URL(`/work/${project.id}/`,siteConfig.domain).href};
 ---
-
-<BaseLayout title={project.data.title} description={project.data.tagline} article jsonLd={jsonLd}>
-	<header class="case-hero section--compact">
-		<div class="shell">
-			<a class="back" href="/work/">← All work</a>
-			<div class="case-grid">
-				<div>
-					<div class="case-meta"><span>{project.data.status}</span><span>{project.data.dates}</span></div>
-					<h1>{project.data.title}</h1>
-					<p class="lede">{project.data.tagline}</p>
-					<ul class="tag-list">{project.data.themes.map((theme) => <li class="tag">{theme}</li>)}</ul>
-				</div>
-				<ProjectVisual type={project.data.visual} label="Research system" />
-			</div>
-		</div>
-	</header>
-
-	<section class="section--compact section--tint">
-		<div class="shell brief-grid">
-			<div><p class="brief-label">Problem</p><p>{project.data.problem}</p></div>
-			<div><p class="brief-label">Approach</p><p>{project.data.approach}</p></div>
-			<div><p class="brief-label">Role</p><p>{project.data.role}</p></div>
-		</div>
-	</section>
-
-	<section class="section--compact">
-		<div class="shell article-grid">
-			<article class="prose"><Content /></article>
-			<aside>
-				<div class="aside-block"><p class="brief-label">Evidence</p><ul>{project.data.evidence.map((item) => <li>{item}</li>)}</ul></div>
-				{project.data.links.length > 0 && <div class="aside-block"><p class="brief-label">Links</p>{project.data.links.map((link) => <a class="aside-link" href={link.url}>{link.label} <span aria-hidden="true">↗</span></a>)}</div>}
-				{project.data.disclosure && <div class="disclosure"><strong>Disclosure</strong><p>{project.data.disclosure}</p></div>}
-			</aside>
-		</div>
-	</section>
-</BaseLayout>
-
-<style>
-	.back { display: inline-block; margin-bottom: 42px; color: var(--ink-soft); font-size: .75rem; font-weight: 700; text-decoration: none; }
-	.case-grid { display: grid; grid-template-columns: 1fr .8fr; gap: clamp(34px, 7vw, 96px); align-items: center; }
-	.case-meta { display: flex; gap: 16px; margin-bottom: 18px; color: var(--teal); font-size: .7rem; font-weight: 750; letter-spacing: .12em; text-transform: uppercase; }
-	.case-grid h1 { margin-bottom: 22px; font-size: clamp(3rem, 6vw, 6.5rem); }
-	.case-grid .lede { margin-bottom: 24px; }
-	.brief-grid { display: grid; grid-template-columns: 1fr 1fr .7fr; gap: 34px; }
-	.brief-grid > div { padding-right: 24px; border-right: 1px solid var(--line); }
-	.brief-grid > div:last-child { border-right: 0; }
-	.brief-grid p:last-child { margin: 0; color: var(--ink-soft); font-family: var(--serif); font-size: 1.05rem; }
-	.brief-label { margin-bottom: 10px; color: var(--teal); font-size: .64rem; font-weight: 780; letter-spacing: .12em; text-transform: uppercase; }
-	.article-grid { display: grid; grid-template-columns: minmax(0, 1fr) 330px; gap: clamp(48px, 9vw, 120px); align-items: start; }
-	aside { position: sticky; top: 110px; }
-	.aside-block { padding: 22px 0; border-top: 1px solid var(--line); }
-	.aside-block ul { padding-left: 18px; color: var(--ink-soft); font-size: .82rem; }
-	.aside-block li + li { margin-top: 10px; }
-	.aside-link { display: block; padding: 7px 0; color: var(--navy); font-size: .76rem; font-weight: 700; text-decoration: none; }
-	.disclosure { margin-top: 18px; padding: 18px; border-left: 3px solid var(--warm); background: rgba(182,95,58,.08); font-size: .76rem; }
-	.disclosure p { margin: 8px 0 0; color: var(--ink-soft); }
-	@media (max-width: 850px) { .case-grid, .article-grid { grid-template-columns: 1fr; } aside { position: static; } .brief-grid { grid-template-columns: 1fr; } .brief-grid > div { padding: 0 0 22px; border-right: 0; border-bottom: 1px solid var(--line); } }
-</style>
+<BaseLayout title={project.data.shortTitle} description={project.data.summary} article jsonLd={jsonLd}><div class="shell">
+<header class="paper-header"><a class="back" href="/#featured">← Research overview</a><h1>{title}</h1>
+{primary&&<div class="authors">{primary.authors.map((name,i)=><>{i?', ':''}{name==='Zinuo You'?<strong>{name}</strong>:name}</>)}</div>}
+<div class="meta">{primary?.venue??project.data.status}{primary?.highlight&&<> · <span class="highlight">{primary.highlight}</span></>}</div>
+<p class="summary">{project.data.summary}</p><div class="links">{researchLinks(item).map(link=><a href={link.url}>{link.label} ↗</a>)}{project.data.demo&&<a href="#demo">Try the toy experiment ↓</a>}</div></header>
+<div class="paper-details">{project.data.role} · {project.data.dates}</div>
+{!project.data.demo&&<figure class="project-illustration"><ResearchVisual type={project.data.visual}/><figcaption>Schematic illustration · {project.data.visual==='video'?'Not generated video or measured research results.':'Not a model output.'}</figcaption></figure>}
+<article class="prose"><Content/></article>{project.data.demo&&<Demo id={project.data.demo}/>}
+{publications.length>1&&<section class="prose"><h2>Extended publication</h2>{publications.slice(1).map(p=><p><a href={p.data.links.find(l=>l.label==='Paper')?.url}>{p.data.title}</a><br/><span class="meta">{p.data.venue}</span></p>)}</section>}
+</div></BaseLayout>
+<style>.project-illustration{margin:24px 0;max-width:580px;padding:20px;background:var(--wash);border:1px solid var(--line);border-radius:5px}.project-illustration :global(svg){width:100%;height:auto}.project-illustration figcaption{font-size:.73rem;color:var(--muted);margin-top:12px}</style>

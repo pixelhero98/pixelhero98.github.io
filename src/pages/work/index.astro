@@ -1,30 +1,7 @@
 ---
-import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import ProjectCard from '../../components/ProjectCard.astro';
-const projects = (await getCollection('projects')).sort((a, b) => {
-	const aOrder = a.data.featuredOrder ?? 99;
-	const bOrder = b.data.featuredOrder ?? 99;
-	return aOrder - bOrder || b.data.dates.localeCompare(a.data.dates);
-});
+import ResearchRow from '../../components/ResearchRow.astro';
+import {researchItems} from '../../lib/research';
+const items=await researchItems();
 ---
-
-<BaseLayout title="Research & projects" description="Research case studies and open-source projects spanning video generation, efficient inference, continuous-time learning, agents, and graph learning.">
-	<header class="section page-hero">
-		<div class="shell">
-			<p class="eyebrow">Research & projects</p>
-			<h1>Work shaped around<br /><span class="serif">the hard part.</span></h1>
-			<p class="lede">From long-horizon drift to low-step integration and irregular observations, each project starts with the system failure that matters.</p>
-		</div>
-	</header>
-	<section class="section--compact">
-		<div class="shell work-grid">{projects.map((project) => <ProjectCard project={project} compact />)}</div>
-	</section>
-</BaseLayout>
-
-<style>
-	.page-hero { padding-bottom: 40px; }
-	.page-hero h1 { max-width: 1000px; }
-	.work-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 58px 24px; }
-	@media (max-width: 720px) { .work-grid { grid-template-columns: 1fr; } }
-</style>
+<BaseLayout title="Research & projects"><div class="shell"><header class="page-heading"><h1>Research & projects</h1><p>Generative modelling, graph learning, and optimization. Explore the ideas through small, interactive synthetic experiments.</p></header>{items.map(item=><ResearchRow item={item}/>)}</div></BaseLayout>
