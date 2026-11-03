@@ -1,0 +1,58 @@
+---
+import { render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { blogPosts, formatDate, postUrl, readingMinutes, type BlogPost } from '../../lib/blog';
+import { siteConfig } from '../../config';
+import 'katex/dist/katex.min.css';
+import '../../styles/blog.css';
+
+export async function getStaticPaths() {
+  return (await blogPosts({ includeDrafts: import.meta.env.DEV }))
+    .map(post => ({ params: { id: post.id }, props: { post } }));
+}
+
+interface Props { post: BlogPost; }
+const { post } = Astro.props;
+const { Content, headings } = await render(post);
+const sections = headings.filter(heading => heading.depth === 2);
+const isDraft = post.data.draft || post.data.date.getTime() > Date.now();
+const jsonLd = {
+  '@context': 'https://schema.org', '@type': 'BlogPosting',
+  headline: post.data.title, description: post.data.description,
+  datePublished: post.data.date.toISOString(),
+  dateModified: (post.data.updated ?? post.data.date).toISOString(),
+  author: { '@type': 'Person', name: siteConfig.name, url: siteConfig.domain },
+  mainEntityOfPage: new URL(postUrl(post), siteConfig.domain).href,
+  image: new URL('/og.jpg', siteConfig.domain).href,
+};
+---
+<BaseLayout title={post.data.title} description={post.data.description} article jsonLd={jsonLd} noindex={isDraft}>
+  <div class="shell blog-shell">
+    <article>
+      <header class="article-heading">
+        <a class="blog-back" href="/blog/">← All articles</a>
+        {isDraft && <p class="draft-notice"><strong>Draft preview.</strong> This article is excluded from the production website and RSS feed.</p>}
+        <div class="post-meta">
+          <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
+          <span aria-hidden="true">·</span><span>{readingMinutes(post)} min read</span>
+        </div>
+        <h1>{post.data.title}</h1>
+        <p class="article-description">{post.data.description}</p>
+        <div class="article-byline">
+          <a href="/about/">{siteConfig.shortName}</a>
+          {post.data.updated && <span>Updated <time datetime={post.data.updated.toISOString()}>{formatDate(post.data.updated)}</time></span>}
+        </div>
+        <ul class="post-tags" aria-label="Topics">{post.data.tags.map(tag => <li>{tag}</li>)}</ul>
+      </header>
+      {sections.length > 1 && <nav class="article-toc" aria-label="On this page">
+        <strong>On this page</strong>
+        <ol>{sections.map(section => <li><a href={`#${section.slug}`}>{section.text}</a></li>)}</ol>
+      </nav>}
+      <div class="prose blog-prose"><Content /></div>
+      <footer class="article-footer">
+        <a href="/blog/">← All articles</a>
+        <a href="/blog/rss.xml">Subscribe via RSS ↗</a>
+      </footer>
+    </article>
+  </div>
+</BaseLayout>

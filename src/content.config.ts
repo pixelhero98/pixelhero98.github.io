@@ -18,4 +18,12 @@ const publications=defineCollection({
  loader:glob({base:'./src/content/publications',pattern:'**/*.md'}),
  schema:z.object({title:z.string(),authors:z.array(z.string()).min(1),year:z.number().int(),venue:z.string(),highlight:z.string().optional(),summary:z.string(),links}),
 });
-export const collections={projects,publications};
+const blog=defineCollection({
+ loader:glob({base:'./src/content/blog',pattern:'**/*.{md,mdx}'}),
+ schema:z.object({
+  title:z.string().min(1),description:z.string().min(1),
+  date:z.coerce.date(),updated:z.coerce.date().optional(),
+  tags:z.array(z.string().min(1)).default([]),draft:z.boolean().default(true),
+ }),
+});
+export const collections={projects,publications,blog};

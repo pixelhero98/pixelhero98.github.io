@@ -17,6 +17,7 @@ Requires Node 22.18 or newer. The demo tests use Node's built-in TypeScript stri
 
 ## Content
 
+- `src/content/blog/` contains blog articles; see [the writing guide](docs/blog.md) for drafts, mathematics, previews, and publishing.
 - `src/content/publications/` owns publication titles, authors, venues, and links.
 - `src/content/projects/` references those publications and supplies display order, summaries, and explanations.
 - `src/lib/demos.ts` contains the six deterministic numerical illustrations, control definitions, and SVG renderer.
