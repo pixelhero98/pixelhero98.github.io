@@ -1,0 +1,32 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { blogPosts, formatDate, postUrl, readingMinutes } from '../../lib/blog';
+import '../../styles/blog.css';
+
+const posts = await blogPosts({ includeDrafts: import.meta.env.DEV });
+---
+<BaseLayout title="Blog" description="Notes on generative modelling, reinforcement learning, and optimization: derivations, small experiments, and implementation details.">
+  <div class="shell blog-shell">
+    <header class="page-heading blog-heading">
+      <div class="blog-eyebrow">Research notes</div>
+      <h1>Blog</h1>
+      <p>Generative modelling, reinforcement learning, and optimization. Ideas worked through with equations, small experiments, and code.</p>
+      <a class="blog-feed" href="/blog/rss.xml">Subscribe via RSS <span aria-hidden="true">↗</span></a>
+    </header>
+    <section aria-label="Articles" class="post-list">
+      {posts.length === 0 && <p class="blog-empty">The first article is on its way. Subscribe via RSS to follow new posts.</p>}
+      {posts.map(post => (
+        <article class="post-row">
+          <div class="post-meta">
+            <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
+            <span aria-hidden="true">·</span><span>{readingMinutes(post)} min read</span>
+            {(post.data.draft || post.data.date.getTime() > Date.now()) && <span class="draft-badge">Draft preview</span>}
+          </div>
+          <h2><a href={postUrl(post)}>{post.data.title}</a></h2>
+          <p>{post.data.description}</p>
+          <ul class="post-tags" aria-label="Topics">{post.data.tags.map(tag => <li>{tag}</li>)}</ul>
+        </article>
+      ))}
+    </section>
+  </div>
+</BaseLayout>

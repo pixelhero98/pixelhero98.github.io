@@ -10,6 +10,7 @@ interface Props {
 	image?: string;
 	article?: boolean;
 	jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+	noindex?: boolean;
 }
 
 const {
@@ -18,6 +19,7 @@ const {
 	image = '/og.jpg',
 	article = false,
 	jsonLd,
+	noindex = false,
 } = Astro.props;
 const pageTitle = title ? `${title} — ${siteConfig.name}` : `${siteConfig.name} — ${siteConfig.headline}`;
 const canonical = new URL(Astro.url.pathname, siteConfig.domain);
@@ -42,6 +44,8 @@ const defaultJsonLd = {
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="generator" content={Astro.generator} />
 		<meta name="description" content={description} />
+		{noindex && <meta name="robots" content="noindex, nofollow" />}
+		<link rel="alternate" type="application/rss+xml" title={`${siteConfig.shortName} — Blog`} href="/blog/rss.xml" />
 		<meta name="theme-color" content="#ffffff" />
 		<link rel="preload" href="/fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
